@@ -5,7 +5,7 @@ Now that you have taken the [PAIRIN Survey](https://survey.pairin.com/signup) yo
 
 #### Limitations
  - The app must be built as a web app only with no backend code.
- - You should mock all calls to the server and use fake data.
+ - You should store users' responses to be recollected when they sign back in.
  - It should be responsive.
 
 ## Requirements
