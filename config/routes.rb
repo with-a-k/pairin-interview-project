@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'survey/index'
+
   resources :users, only: [:create]
   resources :surveys, only: [:create, :edit, :update]
 
