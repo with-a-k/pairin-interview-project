@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'landing/index'
+
   get 'survey/index'
 
   resources :users, only: [:create]
