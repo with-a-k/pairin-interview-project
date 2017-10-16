@@ -1,3 +1,5 @@
+let PropTypes = require('prop-types');
+
 class AdjectiveCard extends React.Component {
   render () {
     return (
@@ -12,15 +14,15 @@ class AdjectiveCard extends React.Component {
 
 AdjectiveCard.propTypes = {
   //The adjective displayed on the card.
-  adjective: React.PropTypes.string,
+  adjective: PropTypes.string,
   //The textual description of that adjective.
-  definition: React.PropTypes.string,
+  definition: PropTypes.string,
   //Part of a URL necessary to get an audio file.
-  audioKey: React.PropTypes.string,
+  audioKey: PropTypes.string,
   //Whether to show or hide the definition.
-  showDefinition: React.PropTypes.bool,
+  showDefinition: PropTypes.bool,
   //Whether the user has indicated that the adjective is accurate to them.
-  accurate: React.PropTypes.bool,
+  accurate: PropTypes.bool,
   //Changes the parent state of this adjective from true to false.
-  toggle: React.PropTypes.func
+  toggle: PropTypes.func
 };

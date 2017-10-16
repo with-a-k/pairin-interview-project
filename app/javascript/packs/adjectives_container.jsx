@@ -1,3 +1,5 @@
+let PropTypes = require('prop-types');
+
 class AdjectivesContainer extends React.Component {
   render () {
     let adjectives = this.props.adjectives.adjectives;
@@ -10,8 +12,8 @@ class AdjectivesContainer extends React.Component {
               key={id}
               adjective={adjectives[id].names.english}
               definition={adjectives[id].definition.english}
-              showDefinition=false
-              accurate=false
+              showDefinition={false}
+              accurate={false}
               />
           );
         })}
@@ -21,5 +23,5 @@ class AdjectivesContainer extends React.Component {
 }
 
 AdjectivesContainer.propTypes = {
-  adjectives: React.PropTypes.object
+  adjectives: PropTypes.object
 };
