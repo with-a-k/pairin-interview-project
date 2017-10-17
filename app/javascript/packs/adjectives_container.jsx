@@ -1,6 +1,8 @@
-let PropTypes = require('prop-types');
+import React from 'react';
+import PropTypes from 'prop-types';
+import AdjectiveCard from './adjective_card';
 
-class AdjectivesContainer extends React.Component {
+export default class AdjectivesContainer extends React.Component {
   render () {
     let adjectives = this.props.adjectives.adjectives;
 

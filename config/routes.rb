@@ -1,5 +1,19 @@
 Rails.application.routes.draw do
 
+  namespace :api do
+    namespace :v1 do
+      post 'survey/create'
+      put 'survey/update'
+    end
+  end
+
+  namespace :api do
+    namespace :v1 do
+      post 'users/create'
+      get 'users/show/:id'
+    end
+  end
+
   get 'landing/index'
 
   get 'survey/index'

@@ -1,4 +1,4 @@
-class UsersController < ApplicationController
+class Api::V1::UsersController < ApplicationController
   def create
     user = Users.create(user_params)
     if user.valid?
@@ -9,6 +9,10 @@ class UsersController < ApplicationController
       flash[:cause] = ""
       redirect_to :back
     end
+  end
+
+  def show
+    return Users.find_by(email: params[:email])
   end
 
   private
