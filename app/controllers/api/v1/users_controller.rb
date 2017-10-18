@@ -1,23 +1,23 @@
 class Api::V1::UsersController < ApplicationController
+  protect_from_forgery with: :null_session, if: Proc.new {|c| c.request.format.json?}
+
   def create
-    user = Users.create(user_params)
-    if user.valid?
-      cookies.signed[:session] = { value: user.id, expires: Time.now + 7200 }
-      redirect_to landing_path
+    user = User.new(JSON.parse(params[:user]))
+    if (user.valid?)
+      user.save
+      render user.to_json
     else
-      flash[:error] = "An error occurred while trying to create your account."
-      flash[:cause] = ""
-      redirect_to :back
+      render :json => {:errors => user.errors.full_messages},
+        :status => :unprocessable_entity
     end
   end
 
-  def show
-    return Users.find_by(email: params[:email])
-  end
-
-  private
-
-  def user_params
-    params.require(:user).permit(:firstname, :lastname, :email, :gender)
+  def index
+    user = User.find_by(email: params[:email])
+    if user
+      render :json => user.to_json(:include => :most_recent_survey), :status => :created
+    else
+      render :json => { :errors => "No user with the specified address" }, :status => :not_found
+    end
   end
 end

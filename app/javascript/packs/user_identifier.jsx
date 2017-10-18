@@ -4,58 +4,46 @@ import PropTypes from 'prop-types';
 import ShortTextbox from './short_textbox';
 import RadioButtons from './radio_buttons';
 import ActionButton from './action_button';
-import https from 'https';
 
 class UserIdentifier extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      firstName: "",
-      lastName: "",
-      email: "",
-      gender: "Other"
-    }
-  }
-
-  handleFieldChange(event) {
-    let target = event.target;
-    let value = target.value;
-    let name = target.name;
-    this.setState({
-      [name]: value
-    });
-  }
-
-  submitForm(event) {
-    console.log('button push');
   }
 
   render() {
     return (
       <div>
         <label>First Name:</label><ShortTextbox name="firstName"
-          value={this.state.firstName}
-          handleChange={this.handleFieldChange.bind(this)}/>
+          value={this.props.firstName}
+          handleChange={this.props.handleChange}/>
         <label>Last Name:</label><ShortTextbox name="lastName"
-          value={this.state.lastName}
-          handleChange={this.handleFieldChange.bind(this)}/>
+          value={this.props.lastName}
+          handleChange={this.props.handleChange}/>
         <label>Email:</label><ShortTextbox name="email"
-          value={this.state.email}
-          handleChange={this.handleFieldChange.bind(this)}/>
+          value={this.props.email}
+          handleChange={this.props.handleChange}/>
         <RadioButtons names={["Male", "Female", "Other"]}
           setName={"gender"}
-          value={this.state.gender}
-          handleChange={this.handleFieldChange.bind(this)}/>
+          value={this.props.gender}
+          handleChange={this.props.handleChange}/>
+          {this.props.errors.map((error, index) => {
+            return (
+              <div key={index} className="error">
+                {error.replace('name', ' Name') + '.'}
+              </div>
+            )
+          })}
         <ActionButton
           label="Sign In"
-          action={this.submitForm}/>
+          action={this.props.submitForm}/>
       </div>
     )
   }
 }
 
 UserIdentifier.propTypes = {
-
+  handleChange: PropTypes.func.isRequired,
+  submitForm: PropTypes.func.isRequired
 }
 
 export default UserIdentifier;

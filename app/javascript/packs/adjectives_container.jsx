@@ -1,19 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import AdjectiveCard from './adjective_card';
+import adjectivesMaster from './constants/adjectives.json';
 
-export default class AdjectivesContainer extends React.Component {
+class AdjectivesContainer extends React.Component {
+  constructor (props) {
+    super(props)
+  }
+
   render () {
-    let adjectives = this.props.adjectives.adjectives;
-
+    let adjectives = this.props.survey;
     return (
       <div>
-        {Object.keys(adjectives).map(function(id) {
+        {adjectivesMaster.adjectives.map(function(adjective) {
           return (
             <AdjectiveCard
-              key={id}
-              adjective={adjectives[id].names.english}
-              definition={adjectives[id].definition.english}
+              key={adjective.id}
+              audioKey={adjective.audio_key}
+              adjective={adjective.name.english}
+              definition={adjective.definition.english}
               showDefinition={false}
               accurate={false}
               />
@@ -27,3 +32,5 @@ export default class AdjectivesContainer extends React.Component {
 AdjectivesContainer.propTypes = {
   adjectives: PropTypes.object
 };
+
+export default AdjectivesContainer;

@@ -5,6 +5,11 @@ export default class AdjectiveCard extends React.Component {
   render () {
     return (
       <div className={`${this.props.accurate ? "applicable" : "not-applicable"}`}>
+        <input type='checkbox'
+               name={this.props.adjective}
+               checked={this.props.accurate}
+               onClick={this.props.togglePresent}/>
+        <label onClick={this.props.playAudioGuide}>(S)</label>
         <h4>{this.props.adjective}</h4>
         <div hidden={!this.props.showDefinition}>{this.props.definition}</div>
       </div>
@@ -19,11 +24,11 @@ AdjectiveCard.defaultProps = {
 
 AdjectiveCard.propTypes = {
   //The adjective displayed on the card.
-  adjective: PropTypes.string,
+  adjective: PropTypes.string.isRequired,
   //The textual description of that adjective.
-  definition: PropTypes.string,
+  definition: PropTypes.string.isRequired,
   //Part of a URL necessary to get an audio file.
-  audioKey: PropTypes.string,
+  audioKey: PropTypes.string.isRequired,
   //Whether to show or hide the definition.
   showDefinition: PropTypes.bool,
   //Whether the user has indicated that the adjective is accurate to them.

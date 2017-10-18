@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171016144606) do
+ActiveRecord::Schema.define(version: 20171018032932) do
 
   create_table "surveys", force: :cascade do |t|
     t.boolean  "absent_minded_present"
@@ -625,6 +625,7 @@ ActiveRecord::Schema.define(version: 20171016144606) do
     t.string   "email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string   "gender"
   end
 
 end
