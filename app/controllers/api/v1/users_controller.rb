@@ -15,7 +15,7 @@ class Api::V1::UsersController < ApplicationController
   def index
     user = User.find_by(email: params[:email])
     if user
-      render :json => user.to_json(:include => :surveys)
+      render :json => user.to_json(:methods => :most_recent_survey)
     else
       render :json => { :errors => "No user with the specified address" }, :status => :not_found
     end

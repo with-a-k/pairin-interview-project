@@ -10,6 +10,7 @@ class AdjectivesContainer extends React.Component {
 
   render () {
     let adjectives = this.props.survey;
+    let handleSurveyItemChange = this.props.handleSurveyItemChange;
     return (
       <div>
         {adjectivesMaster.adjectives.map(function(adjective) {
@@ -19,8 +20,8 @@ class AdjectivesContainer extends React.Component {
               audioKey={adjective.audio_key}
               adjective={adjective.name.english}
               definition={adjective.definition.english}
-              showDefinition={false}
-              accurate={false}
+              accurate={adjectives.present[adjective.name.english.toLowerCase().replace(' ','_')]}
+              togglePresent={handleSurveyItemChange}
               />
           );
         })}
@@ -30,7 +31,8 @@ class AdjectivesContainer extends React.Component {
 }
 
 AdjectivesContainer.propTypes = {
-  adjectives: PropTypes.object
+  survey: PropTypes.object,
+  handleSurveyItemChange: PropTypes.func
 };
 
 export default AdjectivesContainer;

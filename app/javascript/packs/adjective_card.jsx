@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 export default class AdjectiveCard extends React.Component {
   render () {
     return (
-      <div className={`${this.props.accurate ? "applicable" : "not-applicable"}`}>
+      <div className={`adjective-card ${this.props.accurate ? "applicable" : "not-applicable"}`}>
         <input type='checkbox'
-               name={this.props.adjective}
+               name={`${this.props.adjective.toLowerCase().replace(' ','_')}/present`}
                checked={this.props.accurate}
                onClick={this.props.togglePresent}/>
         <label onClick={this.props.playAudioGuide}>(S)</label>

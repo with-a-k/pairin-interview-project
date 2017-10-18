@@ -5,19 +5,20 @@ import axios from 'axios';
 import ActionButton from './action_button';
 import AdjectivesContainer from './adjectives_container';
 import UserIdentifier from './user_identifier';
-import SurveyPresent from './survey_present';
-import SurveyGoals from './survey_goals';
+import adjectivesMaster from './constants/adjectives.json';
 
 class ApplicationFrame extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userid: null,
+      //default null, change this later
+      userid: 2,
       firstName: "",
       lastName: "",
       email: "",
       gender: "Other",
-      errors: []
+      errors: [],
+      survey: this.skeletonSurvey()
     }
     this.requester = axios.create({
       baseURL: '/api/v1',
@@ -35,14 +36,30 @@ class ApplicationFrame extends React.Component {
     });
   }
 
-  detangleSurvey(survey) {
-    let splitSurvey = {
-      past: {},
-      present: {}
-    }
-    Object.entries(survey).forEach(function (item) {
-
+  handleSurveyItemChange(event) {
+    let target = event.target;
+    let value = target.checked;
+    let name = target.name.split('/');
+    let adj = name[0];
+    let branch = name[1];
+    let update = this.state.survey;
+    update[branch][adj] = value;
+    this.setState({
+      survey: update
     });
+  }
+
+  skeletonSurvey() {
+    let survey = {
+      present: {},
+      goal: {}
+    }
+    adjectivesMaster.adjectives.forEach(function(adj) {
+      let name = adj.name.english.toLowerCase().replace(' ', '_');
+      survey.present[name] = false;
+      survey.goal[name] = false;
+    });
+    return survey;
   }
 
   searchForUser(user) {
@@ -118,7 +135,10 @@ class ApplicationFrame extends React.Component {
       <div>
         {this.state.userid ?
           (<div>
-             <AdjectivesContainer/>
+             <AdjectivesContainer survey={this.state.survey ?
+                this.state.survey :
+                this.skeletonSurvey()}
+                handleSurveyItemChange={this.handleSurveyItemChange.bind(this)}/>
              <ActionButton label='Sign Out'
                            action={this.signOut.bind(this)}/>
            </div>) :
