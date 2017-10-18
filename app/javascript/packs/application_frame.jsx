@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import ActionButton from './action_button';
 import AdjectivesContainer from './adjectives_container';
 import UserIdentifier from './user_identifier';
 import SurveyPresent from './survey_present';
@@ -34,6 +35,16 @@ class ApplicationFrame extends React.Component {
     });
   }
 
+  detangleSurvey(survey) {
+    let splitSurvey = {
+      past: {},
+      present: {}
+    }
+    Object.entries(survey).forEach(function (item) {
+
+    });
+  }
+
   searchForUser(user) {
     let self = this;
     self.requester({
@@ -45,12 +56,13 @@ class ApplicationFrame extends React.Component {
       responseType: 'json'
     })
     .then(function(response) {
+      console.log(response);
       self.setState({
-        userid: response.data.data.id,
-        firstName: response.data.data.firstname,
-        lastName: response.data.data.lastname,
-        gender: response.data.data.gender,
-        email: response.data.data.email
+        userid: response.data.id,
+        firstName: response.data.firstname,
+        lastName: response.data.lastname,
+        gender: response.data.gender,
+        email: response.data.email
       });
     })
     .catch(function(error) {
@@ -91,11 +103,25 @@ class ApplicationFrame extends React.Component {
     this.searchForUser(user);
   }
 
+  signOut(event) {
+    this.setState({
+      userid: null,
+      firstName: "",
+      lastName: "",
+      email: "",
+      gender: "Other"
+    })
+  }
+
   render() {
     return (
       <div>
         {this.state.userid ?
-          (<AdjectivesContainer/>) :
+          (<div>
+             <AdjectivesContainer/>
+             <ActionButton label='Sign Out'
+                           action={this.signOut.bind(this)}/>
+           </div>) :
           (<UserIdentifier
               firstName={this.state.firstName}
               lastName={this.state.lastName}
