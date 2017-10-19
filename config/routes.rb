@@ -2,8 +2,8 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { :format => 'json' } do
     namespace :v1 do
-      post 'survey', to: 'surveys#create'
-      put 'survey', to: 'surveys#update'
+      post 'survey/', to: 'survey#create'
+      put 'survey', to: 'survey#update'
       post 'users/', to: 'users#create'
       get 'users/', to: 'users#index'
     end

@@ -11,14 +11,14 @@ class ApplicationFrame extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      //default null, change this later
-      userid: 2,
+      userid: null,
       firstName: "",
       lastName: "",
       email: "",
       gender: "Other",
       errors: [],
-      survey: this.skeletonSurvey()
+      survey: {},
+      part: 0,
     }
     this.requester = axios.create({
       baseURL: '/api/v1',
@@ -49,17 +49,53 @@ class ApplicationFrame extends React.Component {
     });
   }
 
-  skeletonSurvey() {
-    let survey = {
+  unzipSurvey(survey) {
+    let unzipped = {
       present: {},
       goal: {}
     }
-    adjectivesMaster.adjectives.forEach(function(adj) {
-      let name = adj.name.english.toLowerCase().replace(' ', '_');
-      survey.present[name] = false;
-      survey.goal[name] = false;
+    Object.keys(survey).forEach(function(key) {
+      let lastUnderscoreIndex = key.lastIndexOf('_');
+      if (lastUnderscoreIndex == -1) {
+        //do nothing
+      } else {
+        let name = key.slice(0, lastUnderscoreIndex);
+        let group = key.slice(lastUnderscoreIndex+1);
+        if (group == "present" || group == "goal") {
+          unzipped[group][name] = survey[key];
+        }
+      }
     });
-    return survey;
+    return unzipped;
+  }
+
+  submitSurvey() {
+    let submission = {}
+    let self = this;
+    let survey = self.state.survey;
+    adjectivesMaster.adjectives.forEach(function(adj) {
+      let name = adj.name.english.toLowerCase().replace(' ','_');
+      submission[`${name}_present`] = survey.present[name];
+    });
+    self.requester({
+      method: 'post',
+      url: '/survey.json',
+      params: {
+        userid: self.state.userid,
+        survey: submission
+      },
+      responseType: 'json'
+    }).then(function(response) {
+      let futureSurveyState = self.state.survey;
+      Object.keys(survey.present).forEach(function(key) {
+        futureSurveyState.goal[key] = survey.present[key];
+      });
+      self.setState({
+        survey: futureSurveyState,
+        surveyid: response.data.id,
+        part: 2
+      })
+    })
   }
 
   searchForUser(user) {
@@ -73,13 +109,15 @@ class ApplicationFrame extends React.Component {
       responseType: 'json'
     })
     .then(function(response) {
-      console.log(response);
       self.setState({
         userid: response.data.id,
         firstName: response.data.firstname,
         lastName: response.data.lastname,
         gender: response.data.gender,
-        email: response.data.email
+        email: response.data.email,
+        survey: self.unzipSurvey(response.data.most_recent_survey),
+        surveyid: response.data.most_recent_survey.id,
+        part: 1
       });
     })
     .catch(function(error) {
@@ -102,7 +140,9 @@ class ApplicationFrame extends React.Component {
         firstName: response.data.firstname,
         lastName: response.data.lastname,
         gender: response.data.gender,
-        email: response.data.email
+        email: response.data.email,
+        survey: self.unzipSurvey(response.data.most_recent_survey),
+        part: 1
       })
     })
     .catch(function(error) {
@@ -121,6 +161,7 @@ class ApplicationFrame extends React.Component {
   }
 
   signOut(event) {
+    this.submitSurvey();
     this.setState({
       userid: null,
       firstName: "",
@@ -135,10 +176,11 @@ class ApplicationFrame extends React.Component {
       <div>
         {this.state.userid ?
           (<div>
-             <AdjectivesContainer survey={this.state.survey ?
-                this.state.survey :
-                this.skeletonSurvey()}
-                handleSurveyItemChange={this.handleSurveyItemChange.bind(this)}/>
+             <AdjectivesContainer survey={this.state.survey}
+               handleSurveyItemChange={this.handleSurveyItemChange.bind(this)}
+               part={this.state.part}/>
+             <ActionButton label='Submit'
+                           action={this.submitSurvey.bind(this)}/>
              <ActionButton label='Sign Out'
                            action={this.signOut.bind(this)}/>
            </div>) :

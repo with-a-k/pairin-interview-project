@@ -8,10 +8,16 @@ export default class AdjectiveCard extends React.Component {
         <input type='checkbox'
                name={`${this.props.adjective.toLowerCase().replace(' ','_')}/present`}
                checked={this.props.accurate}
-               onClick={this.props.togglePresent}/>
+               onClick={this.props.toggle}/>
         <label onClick={this.props.playAudioGuide}>(S)</label>
         <h4>{this.props.adjective}</h4>
+        <input type='checkbox'
+               hidden={this.props.part < 2}
+               name={`${this.props.adjective.toLowerCase().replace(' ','_')}/goal`}
+               checked={this.props.goal}
+               onClick={this.props.toggle}/>
         <div hidden={!this.props.showDefinition}>{this.props.definition}</div>
+
       </div>
     );
   }
@@ -35,12 +41,11 @@ AdjectiveCard.propTypes = {
   accurate: PropTypes.bool,
   //Whether the user has indicated that they would like to have this apply to them in the future.
   goal: PropTypes.bool,
-  //Changes the parent state of this adjective's Present value from true to false.
-  togglePresent: PropTypes.func,
-  //Changes the parent state of this adjective's Goal value from true to false.
-  toggleGoal: PropTypes.func,
+  //Changes the parent state of a checkbox (present or goal).
+  toggle: PropTypes.func,
   //Changes the visibility of the definition.
   toggleDefinition: PropTypes.func,
   //Plays the audio file for the adjective.
-  playAudioGuide: PropTypes.func
+  playAudioGuide: PropTypes.func,
+  //Whether the survey should show goal checks.
 };

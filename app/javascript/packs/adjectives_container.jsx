@@ -11,17 +11,20 @@ class AdjectivesContainer extends React.Component {
   render () {
     let adjectives = this.props.survey;
     let handleSurveyItemChange = this.props.handleSurveyItemChange;
+    let self = this;
     return (
-      <div>
+      <div className="adjective-container">
         {adjectivesMaster.adjectives.map(function(adjective) {
           return (
             <AdjectiveCard
               key={adjective.id}
+              part={self.props.part}
               audioKey={adjective.audio_key}
               adjective={adjective.name.english}
               definition={adjective.definition.english}
               accurate={adjectives.present[adjective.name.english.toLowerCase().replace(' ','_')]}
-              togglePresent={handleSurveyItemChange}
+              goal={adjectives.goal[adjective.name.english.toLowerCase().replace(' ','_')]}
+              toggle={handleSurveyItemChange}
               />
           );
         })}
