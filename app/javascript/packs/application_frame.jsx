@@ -10,6 +10,7 @@ import adjectivesMaster from './constants/adjectives.json';
 class ApplicationFrame extends React.Component {
   constructor(props) {
     super(props);
+    window.AudioContext = window.AudioContext || window.webkitAudioContext;
     this.state = {
       userid: null,
       firstName: "",
@@ -19,6 +20,7 @@ class ApplicationFrame extends React.Component {
       errors: [],
       survey: {},
       part: 0,
+      audioContext: new AudioContext(),
     }
     this.requester = axios.create({
       baseURL: '/api/v1',
@@ -94,7 +96,37 @@ class ApplicationFrame extends React.Component {
         survey: futureSurveyState,
         surveyid: response.data.id,
         part: 2
-      })
+      });
+      window.scrollTo(0, 0);
+    })
+  }
+
+  updateSurvey() {
+    let presents = {};
+    let goals = {};
+    let self = this;
+    let survey = self.state.survey;
+    adjectivesMaster.adjectives.forEach(function(adj) {
+      let name = adj.name.english.toLowerCase().replace(' ','_');
+      presents[`${name}_present`] = survey.present[name];
+      goals[`${name}_goal`] = survey.goal[name];
+    });
+    self.requester({
+      method: 'put',
+      url: '/survey.json',
+      params: {
+        userid: self.state.userid,
+        survey: submission
+      },
+      responseType: 'json'
+    }).then(function(response) {
+      this.setState({
+        userid: null,
+        firstName: "",
+        lastName: "",
+        email: "",
+        gender: "Other"
+      });
     })
   }
 
@@ -173,14 +205,16 @@ class ApplicationFrame extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="frame">
         {this.state.userid ?
           (<div>
              <AdjectivesContainer survey={this.state.survey}
                handleSurveyItemChange={this.handleSurveyItemChange.bind(this)}
                part={this.state.part}/>
              <ActionButton label='Submit'
-                           action={this.submitSurvey.bind(this)}/>
+                           action={this.state.part == 1 ?
+                                    this.submitSurvey.bind(this) :
+                                    this.updateSurvey.bind(this)}/>
              <ActionButton label='Sign Out'
                            action={this.signOut.bind(this)}/>
            </div>) :

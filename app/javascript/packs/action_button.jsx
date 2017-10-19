@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const ActionButton = (props) => {
   return (
-    <div>
+    <div className="button">
       <p onClick={props.action}>{props.label}</p>
     </div>
   )

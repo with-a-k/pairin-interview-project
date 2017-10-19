@@ -2,12 +2,136 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+$white: #fff;
+$ash: #f4f4f1;
+$green: #6aca6b;
+$verdi: #51bfb3;
+$lapis: #267b9b;
+$raisin: #212121;
+
+body {
+  background-color: $ash;
+  font-family: 'Open Sans', sans-serif;
+}
+
+h1 {
+  color: $lapis;
+  text-align: center;
+}
+
+p {
+  text-align: center;
+}
+
+input {
+  display: 'inline';
+}
+
 .applicable {
-  h4 {
-    color: #6aca6b;
+  background-color: $green;
+  border-radius: 4px;
+}
+
+.frame {
+  display: flex;
+  flex-direction: column;
+  justify-content: 'space-evenly';
+  align-items: stretch;
+}
+
+.user-identifier {
+  background-color: $white;
+  display: flex;
+  flex-direction: column;
+  justify-content: 'space-evenly';
+  align-items: stretch;
+  width: 55%;
+  margin: auto;
+  padding: 16px;
+  border-radius: 8px;
+  .short-field {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+    width: 95%;
+    margin: auto;
+    padding: 8px;
+    input {
+      width: auto;
+      margin-right: auto;
+    }
+    label {
+      width: 120px;
+      margin-left: auto;
+    }
+  }
+  .radio-hold {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    margin: auto;
+    padding: 8px;
+    .radio {
+      padding: 8px;
+    }
+  }
+  div.button {
+    width: 20%;
   }
 }
 
-.adjective-card {
-  border: 1px black;
+.adjective-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  margin: auto;
+  padding: 8px;
+  border-radius: 8px;
+  .adjective-card {
+    .controls-row {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: auto;
+      width: 100%;
+      .left-control {
+        display: inline-flex;
+        justify-content: space-between;
+        width: 12%;
+      }
+      .right-control {
+        display: inline-flex;
+        justify-content: space-between;
+        width: 12%;
+      }
+    }
+    .definition {
+      align-self: center;
+      text-align: center;
+      padding: 0 0 24px 0;
+    }
+    margin: 4px auto;
+    width: 90%;
+    padding: 0px 16px;
+    border-radius: 8px;
+  }
+  .not-applicable {
+    background-color: $white;
+  }
+  .applicable {
+    background-color: $green;
+  }
+}
+
+.button {
+  border-radius: 4px;
+  align-self: center;
+  text-align: center;
+  color: $white;
+  background-color: $lapis;
 }

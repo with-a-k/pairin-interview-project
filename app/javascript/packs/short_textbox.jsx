@@ -4,12 +4,10 @@ import PropTypes from 'prop-types';
 
 const ShortTextbox = (props) => {
   return (
-    <div>
-      <input type="text"
-             name={props.name}
-             value={props.value}
-             onChange={props.handleChange}/>
-    </div>
+    <input type="text"
+           name={props.name}
+           value={props.value}
+           onChange={props.handleChange}/>
   )
 }
 

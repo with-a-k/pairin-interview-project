@@ -14,6 +14,8 @@ class AdjectivesContainer extends React.Component {
     let self = this;
     return (
       <div className="adjective-container">
+        <p>If you would describe your current self with one of these adjectives, check the box to its left.</p>
+        <p hidden={this.props.part < 2}>If you would describe your ideal self with one of these adjectives, check the box to its right.</p>
         {adjectivesMaster.adjectives.map(function(adjective) {
           return (
             <AdjectiveCard

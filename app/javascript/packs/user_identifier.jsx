@@ -12,16 +12,22 @@ class UserIdentifier extends React.Component {
 
   render() {
     return (
-      <div>
-        <label>First Name:</label><ShortTextbox name="firstName"
-          value={this.props.firstName}
-          handleChange={this.props.handleChange}/>
-        <label>Last Name:</label><ShortTextbox name="lastName"
-          value={this.props.lastName}
-          handleChange={this.props.handleChange}/>
-        <label>Email:</label><ShortTextbox name="email"
-          value={this.props.email}
-          handleChange={this.props.handleChange}/>
+      <div className="user-identifier">
+        <div className="short-field">
+          <label>First Name:</label><ShortTextbox name="firstName"
+            value={this.props.firstName}
+            handleChange={this.props.handleChange}/>
+        </div>
+        <div className="short-field">
+          <label>Last Name:</label><ShortTextbox name="lastName"
+            value={this.props.lastName}
+            handleChange={this.props.handleChange}/>
+        </div>
+        <div className="short-field">
+          <label>Email:</label><ShortTextbox name="email"
+            value={this.props.email}
+            handleChange={this.props.handleChange}/>
+        </div>
         <RadioButtons names={["Male", "Female", "Other"]}
           setName={"gender"}
           value={this.props.gender}

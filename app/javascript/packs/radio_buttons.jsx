@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 
 const RadioButtons = (props) => {
   return (
-    <div>
+    <div className="radio-hold">
       {props.names.map((name, i) => {
-        return <label key={`${name}${i}`}>{name}<input type="radio"
+        return <label className="radio" key={`${name}${i}`}>{name}<input type="radio"
                                    name={props.setName}
                                    value={name}
                                    checked={name == props.value}
