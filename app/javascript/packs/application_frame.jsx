@@ -35,16 +35,19 @@ class ApplicationFrame extends React.Component {
     let source = context.createBufferSource();
     this.requester({
       method: 'get',
-      url: `https://s3.amazonaws.com/pairin-production/assets/audio/en/${event.target.dataset.audiokey}`,
+      url: `https://cors-anywhere.herokuapp.com/https://s3.amazonaws.com/pairin-production/assets/audio/en/${event.target.dataset.audiokey}`,
       responseType: 'arraybuffer'
     })
     .then(function(response) {
-      self.context.decodeAudioData(response, function(buffer) {
+      context.decodeAudioData(response.data, function(buffer) {
         source.buffer = buffer;
-        source.connect(self.context.destination);
+        source.connect(context.destination);
         source.start(0);
       });
-    })
+    }).
+    catch(function(error) {
+      console.log(error);
+    });
   }
 
   handleFieldChange(event) {
@@ -177,6 +180,7 @@ class ApplicationFrame extends React.Component {
       });
     })
     .catch(function(error) {
+      console.log(error);
       self.createUser(user);
     });
   }
