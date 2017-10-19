@@ -19,13 +19,30 @@ class ApplicationFrame extends React.Component {
       gender: "Other",
       errors: [],
       survey: {},
-      part: 0,
-      audioContext: new AudioContext(),
+      part: 0
     }
     this.requester = axios.create({
       baseURL: '/api/v1',
       timeout: 1000,
       xsrfHeaderName: 'X-CSRF-TOKEN'
+    });
+  }
+
+  playAudioGuide(event) {
+    let self = this;
+    let context = new AudioContext();
+    let source = context.createBufferSource();
+    this.requester({
+      method: 'get',
+      url: `https://s3.amazonaws.com/pairin-production/assets/audio/en/${event.target.dataset.audiokey}`,
+      responseType: 'arraybuffer'
+    })
+    .then(function(response) {
+      self.context.decodeAudioData(response, function(buffer) {
+        source.buffer = buffer;
+        source.connect(self.context.destination);
+        source.start(0);
+      });
     })
   }
 
@@ -207,10 +224,11 @@ class ApplicationFrame extends React.Component {
     return (
       <div className="frame">
         {this.state.userid ?
-          (<div>
+          (<div className="meta-container">
              <AdjectivesContainer survey={this.state.survey}
                handleSurveyItemChange={this.handleSurveyItemChange.bind(this)}
-               part={this.state.part}/>
+               part={this.state.part}
+               playAudioGuide={this.playAudioGuide.bind(this)}/>
              <ActionButton label='Submit'
                            action={this.state.part == 1 ?
                                     this.submitSurvey.bind(this) :

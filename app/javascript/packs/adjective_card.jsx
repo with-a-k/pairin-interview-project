@@ -26,7 +26,9 @@ class AdjectiveCard extends React.Component {
                   name={`${this.props.adjective.toLowerCase().replace(' ','_')}/present`}
                   checked={this.props.accurate}
                   onChange={this.props.toggle}/>
-            <span className="fa fa-fw fa-play-circle" onClick={this.props.playAudioGuide}/>
+            <span className="fa fa-fw fa-play-circle"
+                  data-audiokey={this.props.audioKey}
+                  onClick={this.props.playAudioGuide}/>
           </div>
           <div className="middle-control">
             <h4>{this.props.adjective}</h4>

@@ -27,6 +27,7 @@ class AdjectivesContainer extends React.Component {
               accurate={adjectives.present[adjective.name.english.toLowerCase().replace(' ','_')]}
               goal={adjectives.goal[adjective.name.english.toLowerCase().replace(' ','_')]}
               toggle={handleSurveyItemChange}
+              playAudioGuide={self.props.playAudioGuide}
               />
           );
         })}
