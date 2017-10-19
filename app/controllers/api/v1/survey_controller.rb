@@ -10,7 +10,7 @@ class Api::V1::SurveyController < ApplicationController
 
   #only for part 2
   def update
-    survey = Survey.find(params[:surveyid])
+    survey = Survey.find(params[:id])
     survey.update(JSON.parse(params[:survey]))
     render :json => survey.to_json
   end

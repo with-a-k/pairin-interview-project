@@ -19,6 +19,7 @@ class ApplicationFrame extends React.Component {
       gender: "Other",
       errors: [],
       survey: {},
+      surveyid: null,
       part: 0
     }
     this.requester = axios.create({
@@ -123,27 +124,33 @@ class ApplicationFrame extends React.Component {
     let goals = {};
     let self = this;
     let survey = self.state.survey;
+    let updatePart = this.updatePart;
     adjectivesMaster.adjectives.forEach(function(adj) {
       let name = adj.name.english.toLowerCase().replace(' ','_');
       presents[`${name}_present`] = survey.present[name];
       goals[`${name}_goal`] = survey.goal[name];
     });
-    self.requester({
-      method: 'put',
-      url: '/survey.json',
-      params: {
-        userid: self.state.userid,
-        survey: submission
-      },
-      responseType: 'json'
-    }).then(function(response) {
-      this.setState({
+    axios.all([updatePart(presents, self), updatePart(goals, self)])
+    .then(axios.spread(function(response) {
+      self.setState({
         userid: null,
         firstName: "",
         lastName: "",
         email: "",
         gender: "Other"
       });
+    }));
+  }
+
+  updatePart(submission, self) {
+    return self.requester({
+      method: 'put',
+      url: '/survey.json',
+      params: {
+        id: self.state.surveyid,
+        survey: submission
+      },
+      responseType: 'json'
     })
   }
 
